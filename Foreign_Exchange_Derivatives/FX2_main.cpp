@@ -19,7 +19,7 @@ int main()
     FX fx_eq2(T, K, S0, sigma, r, dt, dx, N, M);
     // Ask the object to evaluate the FX data
     // for European Up-and_Out Barrier Call:
-    auto result = fx_eq2.get_data_and_premium();
+    auto result = fx_eq2.evaluate_data_and_premium();
     // STEP 7: OUTPUT RESULTS
     cout << result;
 

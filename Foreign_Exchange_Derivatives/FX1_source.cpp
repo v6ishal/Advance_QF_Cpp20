@@ -65,8 +65,3 @@ result_data FX::evaluate_data_and_premium() const
     result_data result(alpha, dtau, k, x, S, t, tau, u, v);
     return result;
 }
-
-result_data FX::get_data_and_premium() const{
-    cout<<"Before evaluate_data_and_premium"<<endl;
-    return evaluate_data_and_premium();
-}

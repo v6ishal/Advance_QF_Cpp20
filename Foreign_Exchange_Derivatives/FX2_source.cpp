@@ -72,7 +72,3 @@ result_data FX::evaluate_data_and_premium() const
     return result;
 
 }
-
-result_data FX::get_data_and_premium() const{
-    return evaluate_data_and_premium();
-}

@@ -42,7 +42,6 @@ public:
         M = M_;
     }
 
-    result_data get_data_and_premium() const;
     result_data evaluate_data_and_premium() const;
 };
 
