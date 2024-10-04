@@ -1,1 +1,1 @@
-double SampleBoxMuller();
+double boxMuller();

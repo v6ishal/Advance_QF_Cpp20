@@ -1,47 +1,49 @@
-#include "random.hpp"
-#include <iostream>
-#include <cmath>
-#include <algorithm>
+#include"random.hpp"
+#include<bits/stdc++.h>
 using namespace std;
+
 int main()
 {
-    cout << "\n *** START EQ2: Monte Carlo equity basket *** \n";
-    // STEP 1: INPUT PARAMETERS
-    double T=1; // maturity
-    double r=0.05; // interest rate
-    double S10=120; // spot equity 1
-    double S20=100; // spot equity 2
-    double sigma1=0.10; // volatility
-    double sigma2=0.15; // volatility
-    double rho=0.5; // correlation
-    int N=300; // number of steps
-    int M=10000; // number of simulations
+    // For 2 assets
+    cout<<"Monte Carlo European Call"<<endl;
+    //Input paramters
+    auto T = 1; //maturity
+    auto K = 100; //strike price
+    auto S10 = 100; //spot price for asset 1
+    auto S20 = 100; //spot price for asset 2
+    auto sigma1 = 0.10; //volatility
+    auto sigma2 = 0.15;
+    auto rho = 0.5; //correlation
+    auto r = 0.05; //IR
+    int N = 500; //GBM
+    int M = 10000; //MC
+
     double S1[N+1];
     double S2[N+1];
-    double sumpayoff=0;
-    double premium=0;
-    double dt = T / N;
-    // STEP 2: MAIN SIMULATION LOOP
-    for (int j=0; j < M; j++)
+    auto premium = 0.0;
+    auto payoff = 0.0;
+    auto dt = T/N;
+    
+    //Simulations
+    for(int i=0;i<M;i++)
     {
-        S1[0]=S10;
-        S2[0]=S20;
-        // STEP 3: TIME INTEGRATION LOOP
-        for (int i=0; i < N; i++)
+        S1[0] = S10;
+        S2[0] = S20;
+        for(int j=0;j<N;j++)
         {
-            double epsilon1 = SampleBoxMuller();
-            double epsilon2 = SampleBoxMuller();
-            S1[i+1] = S1[i]*(1+r*dt+sigma1*sqrt(dt)*epsilon1);
+            double epsilon1 = boxMuller();
+            S1[j+1] = S1[j]*(1+r*dt+sigma1*sqrt(dt)*epsilon1);
+            double epsilon2 = boxMuller();
             epsilon2 = epsilon1*rho+sqrt(1-rho*rho)*epsilon2;
-            S2[i+1]=S2[i]*(1+r*dt+sigma2*sqrt(dt)*epsilon2);
+            S2[j+1] = S2[j]*(1+r*dt+sigma2*sqrt(dt)*epsilon2);
         }
-        // STEP 4: TIME INTEGRATION LOOP
-        sumpayoff += max(S1[N],S2[N]);
+        //payoff
+        payoff += max(S1[N], S2[N]);
     }
-    // STEP 5: COMPUTE DISCOUNTED EXPECTED PAYOFF
-    premium = exp(-r*T)*(sumpayoff / M);
-    // STEP 6: OUTPUT RESULTS
-    cout <<"premium = " << premium << "\n";
-    cout << "\n *** END EQ2: Monte Carlo equity basket *** \n";
-    return 0;
+
+    //discount the payoff
+    premium = exp(-r*T)*(payoff/M);
+    cout<<"Premium for XYZ stock after GBM and Monte Carlo Simulations-> ";
+    cout<<premium<<endl;
+
 }
